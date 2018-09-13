@@ -36,6 +36,6 @@ cv2.destroyAllWindows()
 ERROR LIST:
 
 	Line 26: cv2.error: OpenCV(3.4.2) /io/opencv/modules/imgproc/src/shapedescr.cpp:272: error: (-215:Assertion failed) npoints >= 0 && (depth == 5 || depth == 4) in function 'contourArea'
-		> fixed 1710H, 9-13-18
+		> fixed 1710H, 9-13-18. Reference: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contours_begin/py_contours_begin.html#contours-getting-started
 
 '''
