@@ -24,8 +24,16 @@ cx = int(M['m10']/M['m00'])
 cy = int(M['m01']/M['m00'])
 
 area = cv2.contourArea(cnt)
-# perimeter = cv2.
+perimeter = cv2.arcLength(cnt, True)
+epsilon = 0.1 * cv2.arcLength(cnt, True)
+approx = cv2.approxPolyDP(cnt, epsilon, True)
+
+print(cx, cy)
 print(area)
+print(perimeter)
+print(approx)
+
+img = cv2.drawContours(img, contours, -1, (0, 255, 0), 3)
 
 cv2.imshow("Original", img)
 cv2.waitKey(0)
