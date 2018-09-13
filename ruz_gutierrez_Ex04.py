@@ -13,8 +13,8 @@ import numpy as np
 
 img = cv2.imread("p1.jpg", 0)
 ret, thresh = cv2.threshold(img, 127, 255, 0)
-contours = cv2.findContours(thresh, 1, 2)
-hierarchy = cv2.findContours(thresh, 1, 2)
+# contours = cv2.findContours(thresh, 1, 2)
+image, contours, hierarchy = cv2.findContours(thresh, 1, 2)
 
 
 cnt = contours[0]
@@ -27,10 +27,15 @@ area = cv2.contourArea(cnt)
 # perimeter = cv2.
 print(area)
 
+cv2.imshow("Original", img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
 '''
 
 ERROR LIST:
 
 	Line 26: cv2.error: OpenCV(3.4.2) /io/opencv/modules/imgproc/src/shapedescr.cpp:272: error: (-215:Assertion failed) npoints >= 0 && (depth == 5 || depth == 4) in function 'contourArea'
+		> fixed 1710H, 9-13-18
 
 '''
