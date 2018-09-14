@@ -55,4 +55,8 @@ NEEDS:
 	> check if contour really is green
 	> gawing function na yung process
 
+LINKS FOR REFERENCE:
+
+	https://docs.opencv.org/3.1.0/dd/d49/tutorial_py_contour_features.html		-		for the functions defined in the readme
+
 '''
