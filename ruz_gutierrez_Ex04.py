@@ -9,33 +9,26 @@ import cv2
 import math
 import numpy as np
 
-#def 
-
-bw_img = cv2.imread("p3.png", 0)
+bw_img = cv2.imread("p3.png", 0)				# read the input image as black and white
 out = cv2.imread("p3.png")
 
-ret, thresh = cv2.threshold(bw_img, 127, 255, 0)
-image, contours, hierarchy = cv2.findContours(thresh, 1, 2)
+ret, thresh = cv2.threshold(bw_img, 127, 255, 0)				# add threshold for binarizing the image
+image, contours, hierarchy = cv2.findContours(thresh, 1, 2)		# find contours. Di ko sure kung allowed 'tong function pero wala namang sinabi sa readme na bawal
 
-cnt = contours[1]
-M = cv2.moments(cnt)
+cnt = contours[1]						# save the desired contour. be warned tho di ko pa makita epekto nito sa output. baka kailangan na RGB yung magiging output
 
-cx = int(M['m10']/M['m00'])
-cy = int(M['m01']/M['m00'])
+area = cv2.contourArea(cnt)								# get contour area of the desired contour
+perimeter = cv2.arcLength(cnt, True)					# get the length of the contour
+epsilon = 0.1 * cv2.arcLength(cnt, True)				# epsilon is the accuracy parameter para gumanda yung output
+approx = cv2.approxPolyDP(cnt, epsilon, True)			# approximates the contour para pretty siya
 
-area = cv2.contourArea(cnt)
-perimeter = cv2.arcLength(cnt, True)
-epsilon = 0.1 * cv2.arcLength(cnt, True)
-approx = cv2.approxPolyDP(cnt, epsilon, True)
-
-print(cx, cy)
-print(area)
+print(area)							# print statements, pwedeng tanggalin later
 print(perimeter)
 print(approx)
 
-bw_img = cv2.drawContours(bw_img, contours, -1, (0, 255, 0), 3)
+bw_img = cv2.drawContours(bw_img, contours, -1, (0, 255, 0), 3)		# draw the contours in green 
 
-cv2.imshow("Original", bw_img)
+cv2.imshow("Original", bw_img)				# show, wait, exit
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 cv2.imwrite("out.jpg", bw_img)
@@ -55,5 +48,11 @@ ERROR LIST:
 
 		Notes: naggaganito lang siya pag yung p3.png yung ipapasa na image. 
 
+NEEDS:
+
+	> isolate the contour for the license plates
+	> colorize the photo
+	> check if contour really is green
+	> gawing function na yung process
 
 '''
