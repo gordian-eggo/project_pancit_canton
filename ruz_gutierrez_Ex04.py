@@ -11,7 +11,7 @@ import numpy as np
 
 images = ["p1.jpg", "p2.jpg", "p3.png"]
 
-def findContours(cnt):
+def findRectangularContours(cnt):
 	area = cv2.contourArea(cnt)
 	perimeter = cv2.arcLength(cnt, True)
 	epsilon = 0.02 * perimeter
