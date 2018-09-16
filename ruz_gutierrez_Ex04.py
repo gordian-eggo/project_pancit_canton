@@ -14,7 +14,7 @@ images = ["p1.jpg", "p2.jpg", "p3.png"]
 def findRectangularContours(cnt):
 	area = cv2.contourArea(cnt)																			# get contour area of the desired contour
 	perimeter = cv2.arcLength(cnt, True)																# get the length of the contour
-	epsilon = 0.02 * Perimeter 																			# epsilon is the accuracy parameter para gumanda yung output
+	epsilon = 0.02 * perimeter 																			# epsilon is the accuracy parameter para gumanda yung output
 	approx = cv2.approxPolyDP(cnt, epsilon, True)														# approximates the contour para pretty siya
 
 	# insert if-statement here with sufficient criteria to filter out most contours
