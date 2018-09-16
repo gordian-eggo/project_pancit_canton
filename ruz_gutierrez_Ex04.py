@@ -45,7 +45,7 @@ def findPlate(img):
 	# another way to do so. draw the contour only if it satisfies the preceding fn in if-statement.
 	# (might need to edit the function tho)
 	for cnt in contours:
-		if findContours(cnt):
+		if findRectangularContours(cnt).all():
 			bw_img = cv2.drawContours(out, [cnt], -1, (0,255,0), 3)
 
 	return out
