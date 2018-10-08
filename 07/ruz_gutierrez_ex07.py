@@ -26,16 +26,29 @@ cropped.append(cropped2)
 
 # crop out the license plate for p3.png
 cropped3 = bin_images[2]
-cropped3 = cropped3[340:490, 245:315]
+cropped3 = cropped3[245:315, 340:490]
 cropped.append(cropped3)
-# pa-edit na lang huhu it's far from accurate
 
-# see .cpp file for nexgt steps
-
-
-cv2.imshow("p1", cropped[0])
-cv2.imshow("p2", cropped[1])
-cv2.imshow("p3", cropped[2])
+# loop through the images to process them
+for i in range(0,3):
+	# cv2.imshow("p"+str(i), cropped[i])
+	# clean
+	cropped[i] = cv2.blur(cropped[i],(5,5))
+	# get connected components
+	ret, labels, stats, centroids = cv2.connectedComponentsWithStats(cropped[i], 8)
+	# loop through each component to determine character
+	for i in range(1, ret):
+		# get component stats
+		t = stats[i, cv2.CC_STAT_TOP];
+		b = t + stats[i, cv2.CC_STAT_HEIGHT] -1;
+		l = stats[i, cv2.CC_STAT_LEFT];
+		r = l + stats[i, cv2.CC_STAT_WIDTH] -1;
+		
+		# crop components
+		well = cropped[i][t-5:b+5, l-5:r+5]
+		cv2.imshow("he{}".format(i), well)
+		# prints character detected
+		print(pytesseract.image_to_string(well, config="--psm 7"))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
