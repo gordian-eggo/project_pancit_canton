@@ -1,6 +1,7 @@
 import numpy as np 
 import math
 import cv2
+import pytesseract
 
 images = ["p1.jpg", "p2.jpg", "p3.png"]
 bin_images = []
@@ -30,25 +31,26 @@ cropped3 = cropped3[245:315, 340:490]
 cropped.append(cropped3)
 
 # loop through the images to process them
-for i in range(0,3):
-	# cv2.imshow("p"+str(i), cropped[i])
+for i in range(0, len(cropped)):
+	cv2.imshow("p"+str(i), cropped[i])
 	# clean
 	cropped[i] = cv2.blur(cropped[i],(5,5))
 	# get connected components
 	ret, labels, stats, centroids = cv2.connectedComponentsWithStats(cropped[i], 8)
+	print("plate#"+str(i) + ": ")
 	# loop through each component to determine character
-	for i in range(1, ret):
+	for j in range(1, ret):
 		# get component stats
-		t = stats[i, cv2.CC_STAT_TOP];
-		b = t + stats[i, cv2.CC_STAT_HEIGHT] -1;
-		l = stats[i, cv2.CC_STAT_LEFT];
-		r = l + stats[i, cv2.CC_STAT_WIDTH] -1;
+		t = stats[j, cv2.CC_STAT_TOP];
+		b = t + stats[j, cv2.CC_STAT_HEIGHT] -1;
+		l = stats[j, cv2.CC_STAT_LEFT];
+		r = l + stats[j, cv2.CC_STAT_WIDTH] -1;
 		
 		# crop components
-		well = cropped[i][t-5:b+5, l-5:r+5]
-		cv2.imshow("he{}".format(i), well)
+		well = cropped[i][t:b, l:r]
+		# cv2.imshow("he{}".format(j), well)
 		# prints character detected
-		print(pytesseract.image_to_string(well, config="--psm 7"))
+		print("	" + pytesseract.image_to_string(well, config="--psm 7"))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
