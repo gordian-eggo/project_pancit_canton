@@ -22,6 +22,7 @@ img_list = [cv2.imread(img_dir + img_name) for img_name in img_files]											
 hsv_list = [cv2.cvtColor(img, cv2.COLOR_BGR2HSV) for img in img_list]																		# converts the images to HSV
 thr_list = [cv2.inRange(hsv_img, lower_blue, upper_blue) for hsv_img in hsv_list] 															# extracts the pixels that qualifies as 'blue' from the images
 res_list = [cv2.bitwise_and(img_list[hsv_list.index(hsv_img)],hsv_img, mask = thr_list[hsv_list.index(hsv_img)]) for hsv_img in hsv_list]	# get the extracted pixels from their respective images
+res_list = [cv2.cvtColor(img, cv2.COLOR_BGR2HSV) for img in res_list]
 # gry_list = [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) for img in res_list]																	# converts the images to grayscale
 out_list = [img.copy() for img in img_list]																									# copies the images for output
 
