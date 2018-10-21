@@ -18,6 +18,7 @@ maxsat = upper_blue[1]						# maximum saturation of upper_blue
 img_dir = "./Satellite Images/"
 img_files = ["albert.jpg", "bret.jpg", "floyd.jpg"]
 
+print("Fixing file lists...")
 img_list = [cv2.imread(img_dir + img_name) for img_name in img_files]																		# reads the image files from a specified dir
 hsv_list = [cv2.cvtColor(img, cv2.COLOR_BGR2HSV) for img in img_list]																		# converts the images to HSV
 thr_list = [cv2.inRange(hsv_img, lower_blue, upper_blue) for hsv_img in hsv_list] 															# extracts the pixels that qualifies as 'blue' from the images
@@ -25,6 +26,7 @@ res_list = [cv2.bitwise_and(img_list[hsv_list.index(hsv_img)],hsv_img, mask = th
 # gry_list = [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) for img in res_list]																	# converts the images to grayscale
 out_list = [img.copy() for img in img_list]																									# copies the images for output
 
+print("Adjusting saturation...")
 for i in range(len(img_files)):
 	rows, cols, channels = img_list[i].shape
 
@@ -49,6 +51,7 @@ for i in range(len(img_files)):
 				for z in range(channels):
 					out_list[i][x,y,z] = scale[0, map_position, z]
 
+print("Writing to file...")
 for i in range(len(img_files)):
 	cv2.imwrite("out_"+img_files[i], out_list[i])
 	cv2.imwrite("iso_"+img_files[i], res_list[i])
