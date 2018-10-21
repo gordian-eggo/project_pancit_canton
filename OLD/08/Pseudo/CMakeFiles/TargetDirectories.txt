@@ -1,0 +1,3 @@
+/mnt/shared/CMSC/165/8/Pseudo/CMakeFiles/edit_cache.dir
+/mnt/shared/CMSC/165/8/Pseudo/CMakeFiles/rebuild_cache.dir
+/mnt/shared/CMSC/165/8/Pseudo/CMakeFiles/Pseudo.dir

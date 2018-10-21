@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( Pseudo_Fxn )
+find_package( OpenCV REQUIRED )
+add_executable( Pseudo_Fxn Pseudo_Fxn.cpp )
+target_link_libraries( Pseudo_Fxn ${OpenCV_LIBS} )
