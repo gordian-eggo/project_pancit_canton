@@ -1,5 +1,3 @@
-
-
 import cv2
 import numpy as np
 
@@ -12,9 +10,6 @@ upper_blue = np.array([130,255,255])
 minsat = lower_blue[1]						# minimum saturation of lower_blue
 maxsat = upper_blue[1]						# maximum saturation of upper_blue
 
-# minratio = 0.2
-# maxratio = 1.0
-
 img_dir = "./Satellite Images/"
 img_files = ["albert.jpg", "bret.jpg", "floyd.jpg"]
 
@@ -24,33 +19,39 @@ hsv_list = [cv2.cvtColor(img, cv2.COLOR_BGR2HSV) for img in img_list]											
 thr_list = [cv2.inRange(hsv_img, lower_blue, upper_blue) for hsv_img in hsv_list] 															# extracts the pixels that qualifies as 'blue' from the images
 res_list = [cv2.bitwise_and(img_list[hsv_list.index(hsv_img)],hsv_img, mask = thr_list[hsv_list.index(hsv_img)]) for hsv_img in hsv_list]	# get the extracted pixels from their respective images
 res_list = [cv2.cvtColor(img, cv2.COLOR_BGR2HSV) for img in res_list]
-# gry_list = [cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) for img in res_list]																	# converts the images to grayscale
-out_list = [img.copy() for img in img_list]																									# copies the images for output
+out_list = [img.copy() for img in img_list]																									
 
-print("Adjusting saturation...")
+print("Adjusting value...")
+# this is naturally slow
 for i in range(len(img_files)):
 	rows, cols, channels = img_list[i].shape
 
 	for x in range(rows):
 		for y in range(cols):
-			# pixel = gry_list[i][x,y]
-			# intensity_ratio = pixel/255.0
-
-			# if intensity_ratio > minratio:
-			# 	map_position = ((intensity_ratio - minratio) / (maxratio - minratio))
-			# 	map_position = int(255 * map_position)
-			# 	for z in range(channels):
-			# 		out_list[i][x,y,z] = scale[0, map_position, z]
-
-			# this changes the criteria to saturation instead of intensity
+			# this changes the criteria to value instead of intensity
 			pixel = res_list[i][x,y]
-			saturation = pixel[1]
+			
+			value = pixel[2]
 
-			if saturation > minsat:
-				map_position = ((saturation - minsat) / (maxsat - minsat))
+			if value > minsat:
+				map_position = ((value - minsat) / (maxsat - minsat))
 				map_position = int(255 * map_position)
 				for z in range(channels):
-					out_list[i][x,y,z] = scale[0, map_position, z]
+					if (map_position <= 255 and map_position > 253):				# reds
+						out_list[i][x,y,z] = scale[0, 0, z]
+					elif (map_position <= 60 and map_position >= 40):			# oranges
+						out_list[i][x,y,z] = scale[0, 0, z]
+					elif (map_position > 60 and map_position <= 120):			# yellows
+						out_list[i][x,y,z] = scale[0, 36, z]
+					elif (map_position > 120 and map_position <= 180):			# greens
+						out_list[i][x,y,z] = scale[0, 219, z]
+					elif (map_position > 180 and map_position <= 200):			# blues
+						out_list[i][x,y,z] = scale[0, 255, z]
+					elif (map_position > 200 and map_position <= 255):			# purples
+						out_list[i][x,y,z] = scale[0, 255, z]
+					# orange, yellow, green, and blue values were adjusted to try to get a result closer 
+					# to what the exercise specfications state
+
 
 print("Writing to file...")
 for i in range(len(img_files)):
@@ -58,5 +59,3 @@ for i in range(len(img_files)):
 	cv2.imwrite("iso_"+img_files[i], res_list[i])
 
 print("Done!")
-# cv2.waitKey(0)
-# cv2.destroyAllWindows() 
